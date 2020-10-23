@@ -18,53 +18,78 @@ namespace Bankkonto
             //Startmeny metod/loop
             while (true)
             {
-
+                int choice;
+                //Tuple acc = new Tuple<string, string, int, int> {;
+                //var accounts = List<Tuple>;
                 //Print Hej välkommen till din bank, #skapa konto, #skriv in ditt bankkonto 
-                PrintMenu();
+                PrintStartMenu();
 
                 //läs in input func /quitmetod
-                UserInput(0, 3);
+                choice = UserInput(3);
 
-                //skapa konto metod
+                if ( choice == 0) // breakar while loopen = quittar
+                {
+                    Console.WriteLine("Good bye, and good luck!!");
+                    break;
+                }
+                else if ( choice == 1) // skapa konto
+                {
+                    CreateAccount();
+                }
+                else if (choice == 2)////#visa saldo, #sätt in /ta ut pengar #gå ut för se startmeny
+                {
+                    AccountMenu();
+                }
 
-                ////#visa saldo, #sätt in /ta ut pengar #gå ut för se startmeny
-
-                //
 
             }
         }
-        static void PrintMenu()
+
+        private static void AccountMenu()
         {
-            Console.WriteLine("**Välkommen til BANKEN**");
-            Console.WriteLine("1:  Skapa nytt bankkonto.");
-            Console.WriteLine("2:  Logga in på ditt konto.");
-            Console.WriteLine("0:  Avsluta BANKEN.");
+            throw new NotImplementedException();
+        }
+
+        private static void CreateAccount()
+        {
+            throw new NotImplementedException();
+        }
+
+        static void PrintStartMenu()
+        {
+            Console.WriteLine("**Welcome to the BANK**");
+            Console.WriteLine("1:  Create new Account.");
+            Console.WriteLine("2:  Sign in to your Account.");
+            Console.WriteLine("0:  Exit the BANK.");
 
         }
 
-        static int UserInput(int start, int count)
+        //takes in how many options u want, loops if wrong input
+        //wrong input is anything except 0-optionsAmount (int)
+        static int UserInput(int optionsAmount)
         {
+            Console.WriteLine("Please enter number to chose(0 - {0}):  ", optionsAmount-1);
+            int choice;
+            var menuChoice = Enumerable.Range(0, optionsAmount);
+            string userInput = Console.ReadLine();
 
-            var menuChoice = Enumerable.Range(start, count);
-            Console.Write("menuChoice = ");
-            foreach (int i in menuChoice)
-                Console.Write(" {0} ",i);
-
-
-
-            int userInput = int.Parse(Console.ReadLine());
-
-
-            //input can only be 0-4
-            while (!menuChoice.Contains(userInput))
+            //input can only be an int
+            while (!int.TryParse(userInput, out choice))
             {
-                //wrong input loop
-                Console.WriteLine("wrong input try again: ");
-                userInput = int.Parse(Console.ReadLine());
+                Console.SetCursorPosition(0, optionsAmount + 1);
+                Console.WriteLine("That is not a number, please try again: ");
+                userInput = Console.ReadLine();
             }
-            return userInput;
-            
+            //input can only be one of the options
+            while (!menuChoice.Contains(choice))
+            {
 
+                Console.SetCursorPosition(0, optionsAmount + 1);
+                Console.WriteLine("That is no option, try again:        ");
+                userInput = Console.ReadLine();
+                choice = int.Parse(userInput);
+            }
+            return choice;
         }
     }
 }
